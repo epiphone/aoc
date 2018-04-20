@@ -1,15 +1,5 @@
 (ns day20)
 
-; (defrecord Vec3 [x y z])
-; (defrecord Particle [p v a])
-
-(defn manhattan-distance [v1 v2]
-  (apply + (mapv (comp #(Math/abs %) -) v1 v2)))
-
-(defn update-particle [[p v a]]
-  (let [new-v (mapv + v a)]
-    [(mapv + p new-v) new-v a]))
-
 (defn read-input []
   (->> "day20input.txt"
        slurp
@@ -19,14 +9,34 @@
                   (map read-string)
                   (partition 3)))))
 
-(defn step [n]
-  (loop [i n particles (read-input)]
-    (if (zero? i)
-      particles
-      (recur (dec i) (map update-particle particles)))))
+; PART 1
 
-(defn closest-to-zero [particles]
-  (apply min-key #(manhattan-distance [0 0 0] (first %)) particles))
+(defn dist-from-zero [vec]
+  (apply + (map #(Math/abs %) vec)))
 
-(defn -main []
-  ())
+(defn part1 []
+  (sort-by (juxt #(dist-from-zero (last %)) #(dist-from-zero (second %)))
+           (read-input)))
+
+; PART 2
+
+(defn step-particle [[p v a]]
+  "Update particle's position and velocity."
+  (let [new-v (mapv + v a)]
+    [(mapv + p new-v) new-v a]))
+
+(defn remove-collisions [particles]
+  "Omit all colliding particles."
+  (let [freqs (frequencies (map first particles))]
+    (filter #(<= (get freqs (first %)) 1) particles)))
+
+(defn step [particles]
+  "Move the simulation ahead by one step."
+  (remove-collisions (map step-particle particles)))
+
+(defn part2 []
+  (->> (read-input)
+       (iterate step)
+       (take 100)
+       last
+       count))
