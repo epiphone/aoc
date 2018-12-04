@@ -5,9 +5,8 @@ from times import cpuTime
 
 proc step1(): int =
   var grid: array[1000*1000, int]
-  let input_f = open("day3input.txt")
-  defer: close(input_f)
-  for line in input_f.lines:
+
+  for line in lines("day3input.txt"):
     var matches: array[5, string]
     discard re.match(line, re.re"#(\d+) @ (\d+),(\d+): (\d+)x(\d+)", matches)
     let
