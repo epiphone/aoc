@@ -2,8 +2,8 @@ import streams
 from strUtils import isUpperAscii, toUpperAscii
 from times import cpuTime
 
-proc react(a: char, b: char): bool =
-  return isUpperAscii(a) != isUpperAscii(b) and toUpperAscii(a) == toUpperAscii(b)
+func react(a: char, b: char): bool =
+  return (ord(a) xor ord(b)) == 32 # courtesy of https://github.com/narimiran/AdventOfCode2018/
 
 proc step1(): int =
   var fs = newFileStream("day5input.txt")
@@ -15,21 +15,18 @@ proc step1(): int =
     if res == "":
       res.add(c)
     else:
-      let prev_c = res.pop()
-      let reacts = react(prev_c, c)
-      if not reacts:
-        res.add(prev_c)
+      if react(res[^1], c):
+        discard res.pop()
+      else:
         res.add(c)
 
   fs.close()
 
   while true:
-    let
-      c1 = res.pop()
-      c2 = res.pop()
-    if not react(c1, c2):
-      res.add(c2)
-      res.add(c1)
+    if react(res[^1], res[^2]):
+      discard res.pop()
+      discard res.pop()
+    else:
       break
 
   return len(res)
@@ -46,23 +43,22 @@ proc step2(): int =
     var fs = newFileStream("day5input.txt")
     var res: seq[char]
     for c in input:
-      if toUpperAscii(c) == toUpperAscii(polymer):
+      let diff = abs(ord(c) - ord(polymer))
+      if diff == 0 or diff == 32:
         continue
       if res.len == 0:
         res.add(c)
       else:
-        let prev_c = res.pop()
-        if not react(c, prev_c):
-          res.add(prev_c)
+        if react(c, res[^1]):
+          discard res.pop()
+        else:
           res.add(c)
 
     while true:
-      let
-        c1 = res.pop()
-        c2 = res.pop()
-      if not react(c1, c2):
-        res.add(c2)
-        res.add(c1)
+      if react(res[^1], res[^2]):
+        discard res.pop()
+        discard res.pop()
+      else:
         break
 
     echo "Polymer length ", res.len, " when removing ", polymer
