@@ -1,5 +1,6 @@
 import algorithm
 import future
+import heapqueue
 import sequtils
 import sets
 import strscans
@@ -15,7 +16,7 @@ proc read_input*(): seq[array[2, char]] =
     discard scanf(line, "Step $w must be finished before step $w can begin.", a, b)
     result.add([a[0], b[0]])
 
-func toString(chars: seq[char]): string =
+func toString(chars: openArray[char]): string =
   result = newStringOfCap(len(chars))
   for c in chars:
     add(result, c)
@@ -34,7 +35,6 @@ proc step1(): string =
   for k, v in steps:
     if v.before == {}:
       first_steps.incl(k)
-    echo k, ": ", v
 
   func make_order(available: set[char], res: seq[char]): seq[char] =
     for c in sorted(toSeq(available.items), cmp):
@@ -49,6 +49,38 @@ proc step1(): string =
     return res
 
   return toString(make_order(first_steps, @[]))
+
+
+proc step1_loop_heapqueue(): string =
+  var steps = initTable[char, Step]()
+  for pair in read_input():
+    for c in pair:
+      if not (c in steps):
+        steps[c] = ({}, {})
+    steps[pair[0]].after.incl(pair[1])
+    steps[pair[1]].before.incl(pair[0])
+
+  var available = newHeapQueue[char]()
+  var done: seq[char]
+  var done_set: set[char]
+
+  func update_available() =
+    for k, v in steps:
+      if v.before <= done_set:
+        available.push(k)
+        steps.del(k)
+
+  update_available()
+
+  while steps.len > 0 or available.len > 0:
+    let c = available.pop()
+    steps.del(c)
+    done.add(c)
+    done_set.incl(c)
+    update_available()
+
+  return toString(done)
+
 
 proc step2(): int =
   func step_duration(c: char): int = ord(c) - 4 # 64
@@ -84,7 +116,6 @@ proc step2(): int =
           if steps[step].before <= done:
             left.delete(j)
             workers[i] = (step: step, time_left: step_duration(step) - 1)
-            echo &"{time:3} Worker {i + 1} started work on {step}: {step_duration(step) - 1}"
             break
 
     if left.len == 0 and all(workers, (w) => w.time_left == 0):
@@ -95,5 +126,7 @@ proc step2(): int =
 when isMainModule:
   var time = cpuTime()
   echo &"Step 1: {step1()}, took {(cpuTime() - time) * 1000:2} ms"
+  time = cpuTime()
+  echo &"Step 1 loop + heapqueue: {step1_loop_heapqueue()}, took {(cpuTime() - time) * 1000:2} ms"
   time = cpuTime()
   echo &"Step 2: {step2()}, took {(cpuTime() - time) * 1000:2} ms"

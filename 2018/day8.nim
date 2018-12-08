@@ -1,5 +1,6 @@
 import algorithm
 import sequtils
+import streams
 import strformat
 import strutils
 from times import cpuTime
@@ -27,12 +28,20 @@ proc step1(): int =
   return metadata_sum
 
 proc step2(): int =
-  var nums = read_input()
-  reverse(nums)
+  let fs = newFileStream("day8input.txt")
+  proc read_num(): int =
+    var res = ""
+    while true:
+      let c = fs.readChar()
+      if c == ' ' or fs.atEnd():
+        break
+      else:
+        res &= c
+    return parseInt(res)
 
-  func node_value(): int =
-    let children_n = nums.pop()
-    let metadata_n = nums.pop()
+  proc node_value(): int =
+    let children_n = read_num()
+    let metadata_n = read_num()
 
     var child_values: seq[int]
     for child in 0..<children_n:
@@ -40,7 +49,7 @@ proc step2(): int =
 
     var metadata_values: seq[int]
     for metadata in 0..<metadata_n:
-      metadata_values.add(nums.pop())
+      metadata_values.add(read_num())
 
     if children_n == 0:
       for metadata in metadata_values:
@@ -50,7 +59,8 @@ proc step2(): int =
         if metadata <= children_n:
           result.inc(child_values[metadata - 1])
 
-  return node_value()
+  result = node_value()
+  close(fs)
 
 when isMainModule:
   var time = cpuTime()
