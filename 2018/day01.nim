@@ -2,7 +2,7 @@ import sets
 from strutils import parseInt
 
 proc step1(): int =
-  let input_f = open("day1input.txt")
+  let input_f = open("inputs/day01.txt")
   defer: close(input_f)
 
   var frequency = 0
@@ -16,7 +16,7 @@ proc step2(): int =
   var frequency = 0
 
   while true:
-    let input_f = open("day1input.txt")
+    let input_f = open("inputs/day01.txt")
     defer: close(input_f)
 
     for line in input_f.lines:

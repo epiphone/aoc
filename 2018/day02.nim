@@ -1,7 +1,7 @@
 import tables
 
 proc step1(): int =
-  let input_f = open("day2input.txt")
+  let input_f = open("inputs/day02.txt")
   defer: close(input_f)
 
   var
@@ -25,7 +25,7 @@ proc step1(): int =
 
 proc step2(): string =
   var rows: seq[string]
-  let input_f = open("day2input.txt")
+  let input_f = open("inputs/day02.txt")
   for line in input_f.lines:
     rows.add(line)
   close(input_f)

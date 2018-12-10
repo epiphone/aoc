@@ -4,7 +4,7 @@ import time
 
 def steps_1_and_2_b():
     rows = []
-    with open("day4input.txt", "r") as input_f:
+    with open("inputs/day04.txt", "r") as input_f:
         rows = input_f.readlines()
     rows.sort()
 

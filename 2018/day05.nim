@@ -6,7 +6,7 @@ func react(a: char, b: char): bool =
   return (ord(a) xor ord(b)) == 32 # courtesy of https://github.com/narimiran/AdventOfCode2018/
 
 proc step1(): int =
-  var fs = newFileStream("day5input.txt")
+  var fs = newFileStream("inputs/day05.txt")
   var res: seq[char]
   while not fs.atEnd:
     let c = fs.readChar()
@@ -33,14 +33,14 @@ proc step1(): int =
 
 proc step2(): int =
   var input = ""
-  for line in lines("day5input.txt"):
+  for line in lines("inputs/day05.txt"):
     input = line
     break
 
   var min_length = (id: 'a', len: -1)
 
   for polymer in 'a'..'z':
-    var fs = newFileStream("day5input.txt")
+    var fs = newFileStream("inputs/day05.txt")
     var res: seq[char]
     for c in input:
       let diff = abs(ord(c) - ord(polymer))

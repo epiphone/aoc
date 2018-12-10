@@ -6,7 +6,7 @@ import strutils
 from times import cpuTime
 
 proc read_input(): seq[int] =
-  for line in lines("day8input.txt"):
+  for line in lines("inputs/day08.txt"):
     return line.split().map(parseInt)
 
 proc step1(): int =
@@ -28,7 +28,7 @@ proc step1(): int =
   return metadata_sum
 
 proc step2(): int =
-  let fs = newFileStream("day8input.txt")
+  let fs = newFileStream("inputs/day08.txt")
   proc read_num(): int =
     var res = ""
     while true:

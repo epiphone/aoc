@@ -9,7 +9,7 @@ from times import epochTime
 type Point = tuple[x, y, vx, vy: int]
 
 proc read_input(): seq[Point] =
-  for line in lines("day10input.txt"):
+  for line in lines("inputs/day10.txt"):
     var x, y, vx, vy: int
     discard scanf(line, "position=<$s$i,$s$i> velocity=<$s$i,$s$i>", x, y, vx, vy)
     result.add((x, y, vx, vy))

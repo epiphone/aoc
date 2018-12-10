@@ -1,3 +1,5 @@
+## This one's a mess!
+
 import algorithm, sugar
 import sequtils
 import sets
@@ -9,7 +11,7 @@ from times import cpuTime
 type Coordinate = tuple[x: int, y: int]
 
 proc read_coords*(): seq[Coordinate] =
-  for line in lines("day6input.txt"):
+  for line in lines("inputs/day06.txt"):
     var x, y: int
     discard scanf(line, "$i, $i", x, y)
     result.add((x, y))

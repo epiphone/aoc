@@ -11,7 +11,7 @@ from times import cpuTime
 type Step = tuple[before: set[char], after: set[char]]
 
 proc read_input*(): seq[array[2, char]] =
-  for line in lines("day7input.txt"):
+  for line in lines("inputs/day07.txt"):
     var a, b: string
     discard scanf(line, "Step $w must be finished before step $w can begin.", a, b)
     result.add([a[0], b[0]])

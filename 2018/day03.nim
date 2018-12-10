@@ -6,7 +6,7 @@ from times import cpuTime
 proc step1(): int =
   var grid: array[1000*1000, int]
 
-  for line in lines("day3input.txt"):
+  for line in lines("inputs/day03.txt"):
     var matches: array[5, string]
     discard re.match(line, re.re"#(\d+) @ (\d+),(\d+): (\d+)x(\d+)", matches)
     let
@@ -29,7 +29,7 @@ proc step1(): int =
 proc step1_hashset(): int =
   type GridKey = array[0..1, int]
   let grid = tables.newCountTable[GridKey]()
-  let input_f = open("day3input.txt")
+  let input_f = open("inputs/day03.txt")
   defer: close(input_f)
   for line in input_f.lines:
     var matches: array[5, string]
@@ -54,7 +54,7 @@ proc step1_hashset(): int =
 proc step2(): int =
   var grid: array[1000*1000, int]
   var claims: seq[array[5, int]] = @[]
-  let input_f = open("day3input.txt")
+  let input_f = open("inputs/day03.txt")
   defer: close(input_f)
   for line in input_f.lines:
     var matches: array[5, string]

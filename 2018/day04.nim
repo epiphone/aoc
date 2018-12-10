@@ -7,7 +7,7 @@ from times import nil
 
 proc steps_1_and_2() =
   var rows: seq[string]
-  for row in lines("day4input.txt"):
+  for row in lines("inputs/day04.txt"):
     rows.add(row)
   sort(rows, cmp)
 
@@ -65,7 +65,7 @@ proc steps_1_and_2() =
 proc steps_1_and_2_b() =
   # Going for a neater solution. Also cuts down execution from ~22ms to ~7ms.
   var rows: seq[string]
-  for row in lines("day4input.txt"):
+  for row in lines("inputs/day04.txt"):
     rows.add(row)
   sort(rows, cmp)
 
