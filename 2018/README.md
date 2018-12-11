@@ -14,3 +14,4 @@ My solutions for [2018](https://adventofcode.com/2018/). Trying to pick up [Nim]
 | 8 | This one was a breeze, reversing the input and popping items recursively. Shaved off a few milliseconds by streaming input with `newFileStream`. |
 | 9 | Used `seq` first but step 2 took ages because of the slow `insert` operation.Replaced `seq` with `DoublyLinkedRing` from `lists` module, which makes step 2 finish in about half a second. |
 | 10 | Relatively straightforward approach: simulated the velocities until distance between points starts to grow. Chaining `sequtils` functions can result in pretty functional code. |
+| 11 | Slow naive solution for step 2 for now. |
