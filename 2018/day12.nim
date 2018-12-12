@@ -2,9 +2,7 @@ import sequtils, strformat, strutils, tables
 from times import epochTime
 
 
-type Pots = array[5, bool]
-
-func parse_pots(pots: string): Pots =
+func parse_pots(pots: string): array[5, bool] =
   for i, c in pots:
     result[i] = c == '#'
 
@@ -22,46 +20,33 @@ proc read_input(): (seq[bool], array[32, bool]) =
       let key = parts[0].parse_pots().bool_arr_to_int()
       result[1][key] = parts[1] == "#"
 
-proc to_string(pots: seq[bool]): string =
-  result = newStringOfCap(pots.len)
-  for p in pots:
-    result.add(if p: '#' else: '.')
-
 proc step1(): int =
   let (initial_pots, rules) = read_input()
-  let padding = repeat(false, 20)
-  var pots = padding & initial_pots & padding
-  # echo to_string(pots)
+  var
+    pots = initial_pots
+    head = 0
 
-
-  # for t in 1..1_000_000:
   for t in 1..20:
-    var new_pots: seq[bool] = pots[0..<2]
-    var curr = 0 #bool_arr_to_int(pots[0..<5])
-    for i, pot in pots[2..^1]:
-      let real_i = i + 2
-      if real_i > (pots.high - 2):
-        new_pots.add(pot)
-        continue
-
+    var new_pots: seq[bool] = @[]
+    var curr: int8 = 0
+    for i, pot in pots & repeat(false, 3):
       if curr >= 16:
         curr -= 16
       curr = curr shl 1
       curr += int8(pot)
 
-      let key = bool_arr_to_int(pots[real_i - 2..real_i + 2])
-      # echo &"i:{i} key:{key} curr:{curr}"
-      # assert curr == key, &"i:{i} curr:{curr} key:{key}"
-      let rule_output = rules[key]
-      new_pots.add(rule_output)
+      let new_pot = rules[curr]
+      if new_pot and new_pots.len() == 0:
+        head = head + i - 2
+      if not new_pot and new_pots.len() == 0:
+        continue
+      new_pots.add(new_pot)
 
-    assert pots.len == new_pots.len
     pots = new_pots
-    # echo to_string(pots)
 
   for i, p in pots:
     if p:
-      result += i - 20
+      result += i + head
 
 
 when isMainModule:
