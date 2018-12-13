@@ -18,11 +18,9 @@ func next_direction(direction: Direction): Direction =
   of right:
     left
 
-# proc read_input(): (array[7, array[7, char]], seq[Cart]) =
 proc read_input(): (array[150, array[150, char]], seq[Cart]) =
   var y = 0
   for line in lines("inputs/day13.txt"):
-  # for line in lines("inputs/day13-test.txt"):
     for x, c in line:
       if c == '<':
         result[0][y][x] = '-'
@@ -40,28 +38,34 @@ proc read_input(): (array[150, array[150, char]], seq[Cart]) =
         result[0][y][x] = c
     y.inc()
 
+proc step_cart(cart: var Cart, current_track: char) =
+  let (pos,vel, prev_dir) = cart
+  if current_track in {'/', '\\'}:
+    let multiplier = if current_track == '/': 1 else: -1
+    if vel.x == 1:
+      cart.vel = (0, -1 * multiplier)
+    elif vel.x == -1:
+      cart.vel = (0, 1 * multiplier)
+    elif vel.y == 1:
+      cart.vel = (-1 * multiplier, 0)
+    else:
+      cart.vel = (1 * multiplier, 0)
+  elif current_track == '+':
+    let new_dir = next_direction(prev_dir)
+    if new_dir in {left, right}:
+      let multiplier = if new_dir == left: 1 else: -1
+      if vel.x == 0:
+        cart.vel = (vel.y * multiplier, 0)
+      else:
+        cart.vel = (0, -vel.x * multiplier)
+    cart.prev_dir = new_dir
 
-proc step1(): Point =
+  cart.pos = (pos.x + cart.vel.x, pos.y + cart.vel.y)
+
+proc step1_and_2(): Point =
   var (tracks, carts) = read_input()
 
-  proc print_track() =
-    for y, row in tracks:
-      var row_str = newStringOfCap(row.len)
-      for x, c in row:
-        if any(carts, (c) => c.pos == (x, y)):
-          row_str.add('X')
-        else:
-          row_str.add(c)
-      echo row_str
-
-  # print_track()
-
-  var i = 0
-  # while i < 10:
   while carts.len > 1:
-    # echo i
-    # print_track()
-    i.inc()
     carts = carts.sortedByIt((it.pos.y, it.pos.x))
     var collided: set[int8]
 
@@ -71,65 +75,11 @@ proc step1(): Point =
       if cast[int8](cart_i) in collided:
         continue
 
-      case track
-      of '/':
-        if vel.x == 1:
-          cart.vel = (0, -1)
-          cart.pos = (pos.x, pos.y - 1)
-        elif vel.x == -1:
-          cart.vel = (0, 1)
-          cart.pos = (pos.x, pos.y + 1)
-        elif vel.y == 1:
-          cart.vel = (-1, 0)
-          cart.pos = (pos.x - 1, pos.y)
-        else:
-          cart.vel = (1, 0)
-          cart.pos = (pos.x + 1, pos.y)
-      of '\\':
-        if vel.x == 1:
-          cart.vel = (0, 1)
-          cart.pos = (pos.x, pos.y + 1)
-        elif vel.x == -1:
-          cart.vel = (0, -1)
-          cart.pos = (pos.x, pos.y - 1)
-        elif vel.y == 1:
-          cart.vel = (1, 0)
-          cart.pos = (pos.x + 1, pos.y)
-        else:
-          cart.vel = (-1, 0)
-          cart.pos = (pos.x - 1, pos.y)
-      of '-', '|':
-        cart.vel = vel
-        cart.pos = (pos.x + vel.x, pos.y + vel.y)
-      of '+':
-        let new_dir = next_direction(prev_dir)
-        case new_dir
-        of left:
-          if vel.x == 0:
-            cart.vel = (vel.y, 0)
-            cart.pos = (pos.x + cart.vel.x, pos.y)
-          else:
-            cart.vel = (0, -vel.x)
-            cart.pos = (pos.x, pos.y + cart.vel.y)
-          cart.prev_dir = new_dir
-        of straight:
-          cart.vel = vel
-          cart.pos = (pos.x + vel.x, pos.y + vel.y)
-          cart.prev_dir = new_dir
-        of right:
-          if vel.x == 0:
-            cart.vel = (-vel.y, 0)
-            cart.pos = (pos.x + cart.vel.x, pos.y)
-          else:
-            cart.vel = (0, vel.x)
-            cart.pos = (pos.x, pos.y + cart.vel.y)
-          cart.prev_dir = new_dir
-      else:
-        assert false, "missing handling for case of track=" & track
+      step_cart(cart, track)
 
       for k, c in carts:
         if cart_i != k and cart.pos == c.pos:
-          echo &"Collision in generation {i} at {cart.pos}!"
+          echo &"Collision in generation at {cart.pos}!"
           collided.incl(cast[int8](cart_i))
           collided.incl(cast[int8](k))
 
@@ -143,7 +93,6 @@ proc step1(): Point =
       echo carts
 
 
-
 when isMainModule:
   var t0 = epochTime()
-  echo &"Step 1: {step1()}, took {(epochTime() - t0) * 1000:3}ms"
+  echo &"Steps 1 and 2: {step1_and_2()}, took {(epochTime() - t0) * 1000:3}ms"
