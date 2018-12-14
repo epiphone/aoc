@@ -16,3 +16,5 @@ My solutions for [2018](https://adventofcode.com/2018/). Trying to pick up [Nim]
 | 10 | Relatively straightforward approach: simulated the velocities until distance between points starts to grow. Chaining `sequtils` functions can result in pretty functional code. |
 | 11 | Slow naive solution for step 2 for now. |
 | 12 | Optimized part 1 by casting `array[bool]` into `int8` and doing bit shifting. Part 2 was really tricky! |
+| 13 | The code is basically just a big conditional in a loop. Missed pattern matching here, ought to try one of the macro based pattern matching libraries. |
+| 14 | Tried `DoublyLinkedList` and a separate queue for keeping track of recipes tail for step 2, since it ran for too long. That was all in vain though: what did the trick was avoiding full cycles over the recipes list!  |
