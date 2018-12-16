@@ -18,5 +18,5 @@ My solutions for [2018](https://adventofcode.com/2018/). Trying to pick up [Nim]
 | 12 | Optimized part 1 by casting `array[bool]` into `int8` and doing bit shifting. Part 2 was really tricky! |
 | 13 | The code is basically just a big conditional in a loop. Missed pattern matching here, ought to try one of the macro based pattern matching libraries. |
 | 14 | Tried `DoublyLinkedList` and a separate queue for keeping track of recipes tail for step 2, since it ran for too long. That was all in vain though: what did the trick was avoiding full cycles over the recipes list!  |
-| 15 | |
-| 16 | A fun one. Solved part 2's mapping from opcode to instruction on paper. Couldn't find a way to retrieve a functions name in runtime, wonder if that's doable? |
+| 15 | Trickiest one so far. Implementing breadth-first search in a way that the task-specified reading order applied took a while. The code is a mess! |
+| 16 | A fun one. Solved part 2's mapping from opcode to instruction on paper. Couldn't find a way to retrieve a functions name in runtime, wonder if that's doable? Getting the size of a set with `.card()` (as in cardinality) instead of `.len()` was a bit confusing. |
