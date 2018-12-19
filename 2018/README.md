@@ -20,3 +20,6 @@ My solutions for [2018](https://adventofcode.com/2018/). Trying to pick up [Nim]
 | 14 | Tried `DoublyLinkedList` and a separate queue for keeping track of recipes tail for step 2, since it ran for too long. That was all in vain though: what did the trick was avoiding full cycles over the recipes list!  |
 | 15 | Trickiest one so far. Implementing breadth-first search in a way that the task-specified reading order applied took a while. The code is a mess! |
 | 16 | A fun one. Solved part 2's mapping from opcode to instruction on paper. Couldn't find a way to retrieve a functions name in runtime, wonder if that's doable? Getting the size of a set with `.card()` (as in cardinality) instead of `.len()` was a bit confusing. |
+| 17 | Took some debugging, this one. Cool to visualize! |
+| 18 | Step 1 was one of the easiest so far. Step 2 in turn was basically incomputable, so had to resort to scanning output and figuring out a pattern. Tried to optimize step 2 first by inlining everything and following other tricks from https://chameth.com/2018/12/09/over-the-top-optimisations-in-nim/. |
+| 19 | More assembler instructions akin to day 16. Step 2 same as above, pattern analysis. |
