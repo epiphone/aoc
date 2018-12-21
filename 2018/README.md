@@ -24,3 +24,4 @@ My solutions for [2018](https://adventofcode.com/2018/). Trying to pick up [Nim]
 | 18 | Step 1 was one of the easiest so far. Step 2 in turn was basically incomputable, so had to resort to scanning output and figuring out a pattern. Tried to optimize step 2 first by inlining everything and following other tricks from https://chameth.com/2018/12/09/over-the-top-optimisations-in-nim/. |
 | 19 | More assembler instructions akin to day 16. Step 2 same as above, pattern analysis. |
 | 20 | Regex parsing. Took a while to get the nested/recursive cases working. Pattern matching would've been handy again! |
+| 21 | Continuing with assembler instructions as per day 16 and 19. Not much of coding involved in this one, just trying to decompile the instructions. |
