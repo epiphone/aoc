@@ -8,3 +8,4 @@ The code isn't polished at all, mind you. I'm usually going for the leaderboard,
 |---|-------|
 | 1 | A good easy start. Relearning all the Nim syntax I forgot since last year's AoC... |
 | 2 | Brute-forced part 2. Could've probably reused some of the instruction pointer code from last year. |
+| 3 | Non-imaginative solution of just iterating through each point in rope paths. |
