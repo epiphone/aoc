@@ -1,4 +1,4 @@
-import sets
+import sets, tables
 from strutils import parseInt, split
 
 type Point = tuple[x, y: int]
@@ -24,7 +24,7 @@ proc step1(): int =
 
   for wire in input:
     var curr_loc = (x: 0, y: 0)
-    var wire_points = initHashSet[tuple[x, y: int]]()
+    var wire_points = initHashSet[Point]()
 
     for step in wire.split(','):
       let
@@ -54,8 +54,9 @@ proc step1(): int =
 
 proc step2(): int =
   var
-    rows: seq[seq[tuple[x: int, y: int, steps: int]]] = @[]
+    rows: seq[seq[tuple[x, y, steps: int]]] = @[]
     min_dist = 99999
+    visited_points = initTable[Point, int]()
 
   for wire_index, wire in input.pairs:
     var
@@ -74,10 +75,10 @@ proc step2(): int =
         curr_loc = (new_loc.x, new_loc.y)
 
         # Utilizing the fact that input consists of only 2 rows:
-        if wire_index > 0:
-          for prev_point in rows[0]:
-            if curr_loc.x == prev_point.x and curr_loc.y == prev_point.y:
-              min_dist = min(min_dist, steps + prev_point.steps)
+        if wire_index == 0:
+          visited_points[curr_loc] = steps
+        elif visited_points.contains(curr_loc):
+          min_dist = min(min_dist, steps + visited_points[curr_loc])
 
         steps += 1
 
