@@ -16,3 +16,4 @@ The code isn't polished at all, mind you. I'm usually going for the leaderboard,
 | 8 | Tried to use fixed-size arrays instead of dynamic tables or sequences wherever possible. |
 | 9 | The instructions caused some head-scratching since at first I didn't realize the new relative mode also applies to memory writes. In the end I rewrote the whole computer step by step which solved the bug. |
 | 10 | Totally different approaches for steps 1 and 2. The latter part caused a headache before I got around to sorting the asteroids by angle and distance from the base station. |
+| 11 | Yet another CPU instruction task. Missing Python's list comprehensions and `defaultdict`. |
