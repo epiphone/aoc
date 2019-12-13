@@ -18,3 +18,4 @@ The code isn't polished at all, mind you. I'm usually going for the leaderboard,
 | 10 | Totally different approaches for steps 1 and 2. The latter part caused a headache before I got around to sorting the asteroids by angle and distance from the base station. |
 | 11 | Yet another CPU instruction task. Missing Python's list comprehensions and `defaultdict`. |
 | 12 | Finished step 2 by running the simulation separately per axis and then calculating their least common denominator. |
+| 13 | Ol' intcode computer at it again. This one was a blast! |
