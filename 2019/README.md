@@ -19,3 +19,4 @@ The code isn't polished at all, mind you. I'm usually going for the leaderboard,
 | 11 | Yet another CPU instruction task. Missing Python's list comprehensions and `defaultdict`. |
 | 12 | Finished step 2 by running the simulation separately per axis and then calculating their least common denominator. |
 | 13 | Ol' intcode computer at it again. This one was a blast! |
+| 14 | Step 1 really tripped me up. Learned of `tables.mgetOrPut`, a good counterpart for Python's `defaultdict`. |
