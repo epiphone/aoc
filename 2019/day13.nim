@@ -4,7 +4,7 @@ let input = "1,380,379,385,1008,2399,848142,381,1005,381,12,99,109,2400,1101,0,0
 
 type Computer = tuple[mem: Table[int, int], inputs: seq[int], rb, ip, mode_a, mode_b, mode_c: int]
 
-func init_computer(ops: string, inputs: seq[int]): Computer =
+func init_computer*(ops: string, inputs: seq[int]): Computer =
   result.inputs = inputs.reversed() # reverse for `pop()`ing
   for i, op in ops.split(',').map(parseInt).pairs:
     result.mem[i] = op
@@ -27,7 +27,7 @@ func read1(c: Computer): int = c.mem.getOrDefault(c.addr1)
 func read2(c: Computer): int = c.mem.getOrDefault(c.addr2)
 func read3(c: Computer): int = c.mem.getOrDefault(c.addr3)
 
-proc process(c: var Computer): seq[int] =
+proc process*(c: var Computer): seq[int] =
   while true:
     case read_opcode(c)
     of 1:
