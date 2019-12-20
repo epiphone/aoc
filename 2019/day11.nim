@@ -62,9 +62,9 @@ proc process(c: var Computer): seq[int] =
     else:
       raise newException(Exception, "Invalid operation")
 
-type Dir = enum Up, Right, Down, Left
+type Dir* = enum Up, Right, Down, Left
 
-func turn(dir, to_dir: Dir): Dir =
+func turn*(dir, to_dir: Dir): Dir =
   if to_dir == Left:
     if dir == Up: Left elif dir == Left: Down elif dir == Down: Right else: Up
   else:

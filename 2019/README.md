@@ -22,4 +22,5 @@ The code isn't polished at all, mind you. I'm usually going for the leaderboard,
 | 14 | Step 1 really tripped me up. Learned of `tables.mgetOrPut`, a good counterpart for Python's `defaultdict`. |
 | 15 | Took a lot of work, this one. Fun to render step-by-step though! |
 | 16 | Had fun optimizing step 1 from a `sequtils`-based solution to something more sensible with fewer intermediate objects. Step 2 was purely based on finding a pattern between phases. |
+| 17 | Learned that I can't mutate a table `mem[0] = 2` without importing `tables`, interesting. |
 | 20 | Parsing input was pretty tricky this time. Went with breadth-first search and added a 3rd dimension for step 2. |
