@@ -21,3 +21,4 @@ The code isn't polished at all, mind you. I'm usually going for the leaderboard,
 | 13 | Ol' intcode computer at it again. This one was a blast! |
 | 14 | Step 1 really tripped me up. Learned of `tables.mgetOrPut`, a good counterpart for Python's `defaultdict`. |
 | 15 | Took a lot of work, this one. Fun to render step-by-step though! |
+| 16 | Had fun optimizing step 1 from a `sequtils`-based solution to something more sensible with fewer intermediate objects. Step 2 was purely based on finding a pattern between phases. |
