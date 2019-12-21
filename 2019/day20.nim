@@ -29,7 +29,7 @@ func breadth_first_search*[T](p1, p2: T, get_neighbours: proc (p: T): seq[T]): i
         dist[v] = alt_dist
         q.push((alt_dist, v))
 
-  return dist[p2]
+  return dist.getOrDefault(p2, -1)
 
 
 proc step1(): int =
