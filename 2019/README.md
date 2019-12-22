@@ -2,8 +2,6 @@
 
 My solutions for [2019](https://adventofcode.com/2019/). Back at it with [Nim](https://nim-lang.org/)!
 
-The code isn't polished at all, mind you. I'm usually going for the leaderboard, not the optimal or most elegant solution.
-
 | Day | Notes |
 |---|-------|
 | 1 | A good easy start. Relearning all the Nim syntax I forgot since last year's AoC... |
@@ -23,6 +21,7 @@ The code isn't polished at all, mind you. I'm usually going for the leaderboard,
 | 15 | Took a lot of work, this one. Fun to render step-by-step though! |
 | 16 | Had fun optimizing step 1 from a `sequtils`-based solution to something more sensible with fewer intermediate objects. Step 2 was purely based on finding a pattern between phases. |
 | 17 | Learned that I can't mutate a table `mem[0] = 2` without importing `tables`, interesting. |
-| 18 | Step 1 runs pretty slow even after precomputing distances between keys and trying to eliminate invalid recursion paths early; probably missed some missed optimization opportunities. For step 2 I just ran the first part once per each quarter and summed the results together. |
+| 18 | Step 1 runs pretty slow even after precomputing distances between keys and trying to eliminate invalid recursion paths early; probably missed some optimization opportunities. For step 2 I just ran the first part once per each quarter and summed the results together. |
 | 19 | Really easy one compared to the ones before. Tracked along the right-side beam edge for step 2. |
 | 20 | Parsing input was pretty tricky this time. Went with breadth-first search and added a 3rd dimension for step 2. |
+| 21 | A fun one. One of those tasks that you solve in your head as opposed to writing a bunch of code. |
