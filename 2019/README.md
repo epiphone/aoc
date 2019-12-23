@@ -25,3 +25,4 @@ My solutions for [2019](https://adventofcode.com/2019/). Back at it with [Nim](h
 | 19 | Really easy one compared to the ones before. Tracked along the right-side beam edge for step 2. |
 | 20 | Parsing input was pretty tricky this time. Went with breadth-first search and added a 3rd dimension for step 2. |
 | 21 | A fun one. One of those tasks that you solve in your head as opposed to writing a bunch of code. |
+| 23 | Simple after realizing each computer runs independently and sequence of packets doesn't really matter. |
