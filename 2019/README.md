@@ -26,3 +26,4 @@ My solutions for [2019](https://adventofcode.com/2019/). Back at it with [Nim](h
 | 20 | Parsing input was pretty tricky this time. Went with breadth-first search and added a 3rd dimension for step 2. |
 | 21 | A fun one. One of those tasks that you solve in your head as opposed to writing a bunch of code. |
 | 23 | Simple after realizing each computer runs independently and sequence of packets doesn't really matter. |
+| 24 | Learned that `false.int == 0` and `true.int == 1`, can be handy. |
