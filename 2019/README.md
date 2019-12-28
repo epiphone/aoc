@@ -28,3 +28,4 @@ My solutions for [2019](https://adventofcode.com/2019/). Back at it with [Nim](h
 | 22 | Step 2 was the toughest of the year for me; had to resort to peeking others' solutions on Reddit. Used the `bigints` library and the modular exponentation snippet from Rosetta Code. |
 | 23 | Simple after realizing each computer runs independently and sequence of packets doesn't really matter. |
 | 24 | Learned that `false.int == 0` and `true.int == 1`, can be handy. |
+| 25 | Done! |
