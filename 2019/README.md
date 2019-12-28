@@ -10,7 +10,7 @@ My solutions for [2019](https://adventofcode.com/2019/). Back at it with [Nim](h
 | 4 | Apparently if you keep refreshing the page seconds before a task is released they redirect you to an old task... anyway I did solve day 4 from **2015** pretty fast! Lesson learned. Eventually I did get to this year's task as well: nothing particularly smart there, just iterating through the whole range and checking for the conditions. |
 | 5 | Picking off from day 2 with the CPU instruction stuff. Pretty happy to make it to the leaderboard with step 2 at #92. |
 | 6 | Rolled out Dijkstra's algorithm in step 2. |
-| 7 | More CPU instructions. Got fed up with step 2, might return to it later. |
+| 7 | More CPU instructions. ~~Got fed up with step 2, might return to it later.~~ |
 | 8 | Tried to use fixed-size arrays instead of dynamic tables or sequences wherever possible. |
 | 9 | The instructions caused some head-scratching since at first I didn't realize the new relative mode also applies to memory writes. In the end I rewrote the whole computer step by step which solved the bug. |
 | 10 | Totally different approaches for steps 1 and 2. The latter part caused a headache before I got around to sorting the asteroids by angle and distance from the base station. |
