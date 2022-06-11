@@ -95,3 +95,10 @@ Utils.withStopwatch "step1Recursive" step1Recursive
 Utils.withStopwatch "step1RecursiveSorted" step1RecursiveSorted
 Utils.withStopwatch "step1Set" step1Set
 Utils.withStopwatch "step2" step2
+
+// > dotnet fsi Day01.fsx
+// step1ForLoops result=542619 took 1ms (1227408 ticks)
+// step1Recursive result=542619 took 1ms (1268170 ticks)
+// step1RecursiveSorted result=542619 took 1ms (1554993 ticks)
+// step1Set result=542619 took 1ms (1795135 ticks)
+// step2 result=32858450 took 37ms (37053541 ticks)
