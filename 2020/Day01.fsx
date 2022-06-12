@@ -5,6 +5,7 @@ let entries =
     |> System.IO.File.ReadLines
     |> Seq.map int
     |> Seq.toArray
+// |> Array.sort makes all solutions faster
 
 let target = 2020
 
@@ -16,7 +17,6 @@ let pairs xs =
             for j = i + 1 to (Array.length xs - 1) do
                 yield (xs[i], xs[j])
     }
-
 
 let step1ForLoops () : int =
     entries
@@ -47,18 +47,17 @@ let step1Recursive () : int =
 // Step 1 using recursion and pre-sort:
 
 let pairsRecSorted xs =
+    let rec inner i j =
+        seq {
+            if j < Array.length xs && ((xs[i] + xs[j]) <= target) then
+                yield (xs[i], xs[j])
+                yield! inner i (j + 1)
+        }
+
     seq {
         for i = 0 to Array.length xs - 2 do
-            let rec inner j =
-                seq {
-                    if j < Array.length xs && ((xs[i] + xs[j]) <= target) then
-                        yield (xs[i], xs[j])
-                        yield! inner (j + 1)
-                }
-
-            yield! inner (i + 1)
+            yield! inner i (i + 1)
     }
-
 
 let step1RecursiveSorted () : int =
     entries
@@ -91,6 +90,7 @@ let step2 () : int =
     |> fun (a, b, c) -> a * b * c
 
 Utils.benchmark [ ("step1ForLoops", step1ForLoops)
+                  ("step1Recursive", step1Recursive)
                   ("step1RecursiveSorted", step1RecursiveSorted)
                   ("step1Set", step1Set)
                   ("step2", step2) ]
@@ -98,8 +98,9 @@ Utils.benchmark [ ("step1ForLoops", step1ForLoops)
 (*
 | name                 |               result |   ms |      ticks |
 |=================================================================|
-| step1ForLoops        |               542619 |    1 |    1544815 |
-| step1RecursiveSorted |               542619 |    0 |     322662 |
-| step1Set             |               542619 |    0 |     501345 |
-| step2                |             32858450 |  276 |  276718119 |
+| step1ForLoops        |               542619 |    2 |    2755690 |
+| step1Recursive       |               542619 |    1 |    1588433 |
+| step1RecursiveSorted |               542619 |    0 |     370589 |
+| step1Set             |               542619 |    0 |     521791 |
+| step2                |             32858450 |  250 |  250186685 |
 *)
