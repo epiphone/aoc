@@ -90,15 +90,16 @@ let step2 () : int =
     |> Seq.find (fun (a, b, c) -> a + b + c = target)
     |> fun (a, b, c) -> a * b * c
 
-Utils.withStopwatch "step1ForLoops" step1ForLoops
-Utils.withStopwatch "step1Recursive" step1Recursive
-Utils.withStopwatch "step1RecursiveSorted" step1RecursiveSorted
-Utils.withStopwatch "step1Set" step1Set
-Utils.withStopwatch "step2" step2
+Utils.benchmark [ ("step1ForLoops", step1ForLoops)
+                  ("step1RecursiveSorted", step1RecursiveSorted)
+                  ("step1Set", step1Set)
+                  ("step2", step2) ]
 
-// > dotnet fsi Day01.fsx
-// step1ForLoops result=542619 took 1ms (1227408 ticks)
-// step1Recursive result=542619 took 1ms (1268170 ticks)
-// step1RecursiveSorted result=542619 took 1ms (1554993 ticks)
-// step1Set result=542619 took 1ms (1795135 ticks)
-// step2 result=32858450 took 37ms (37053541 ticks)
+(*
+| name                 |               result |   ms |      ticks |
+|=================================================================|
+| step1ForLoops        |               542619 |    1 |    1544815 |
+| step1RecursiveSorted |               542619 |    0 |     322662 |
+| step1Set             |               542619 |    0 |     501345 |
+| step2                |             32858450 |  276 |  276718119 |
+*)
