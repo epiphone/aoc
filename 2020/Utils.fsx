@@ -24,8 +24,14 @@ let benchmark (entries: seq<string * (unit -> 'a)>) : unit =
 
 // Input parsing:
 
-let matches (regex: Regex) (input: string) =
-    let m = regex.Match(input)
+let makeRegex (input: obj) =
+    match input with
+    | :? string as str -> Regex(str)
+    | :? Regex as regex -> regex
+    | _ -> failwith "invalid regex"
+
+let matches regexStr (input: string) =
+    let m = makeRegex(regexStr).Match(input)
 
     if m.Success then
         Some [ for group in m.Groups -> group.Value ]
