@@ -3,41 +3,28 @@ open Utils
 
 // Parse input:
 
-type BoardingPass = { Row: list<bool>; Column: list<bool> }
-
-let boardingPasses =
-    "./input05.txt"
-    |> System.IO.File.ReadLines
-    |> Seq.map (fun line ->
-        { Row =
-            line[..6]
-            |> Seq.map (fun c -> c = 'B')
-            |> Seq.toList
-          Column =
-            line[7..]
-            |> Seq.map (fun c -> c = 'R')
-            |> Seq.toList })
+let boardingPasses = "./input05.txt" |> System.IO.File.ReadAllLines
 
 // Step 1:
 
-let binarySpacePartition xs =
-    let rec inner min max xs' =
-        match xs' with
-        | true :: tail -> inner (min + (max - min) / 2) max tail
-        | false :: tail -> inner min (min + (max - min) / 2) tail
-        | [] -> max
+let binarySpacePartition (xs: string) =
+    let rec inner min max i =
+        if i = xs.Length then
+            max
+        else
+            match xs[i] with
+            | 'B'
+            | 'R' -> inner (min + (max - min) / 2) max (i + 1)
+            | _ -> inner min (min + (max - min) / 2) (i + 1)
 
-    inner 0 (pown 2 (List.length xs) - 1) xs
+    inner 0 (pown 2 (xs.Length) - 1) 0
 
-let getSeatId (boardingPass: BoardingPass) =
-    (binarySpacePartition boardingPass.Row * 8)
-    + binarySpacePartition boardingPass.Column
+let getSeatId (boardingPass: string) =
+    (binarySpacePartition boardingPass[..6] * 8)
+    + binarySpacePartition boardingPass[7..]
 
 let step1 () =
-    boardingPasses
-    |> Seq.map getSeatId
-    |> Seq.sort
-    |> Seq.last
+    boardingPasses |> Seq.map getSeatId |> Seq.max
 
 // Step 2:
 
