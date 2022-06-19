@@ -50,3 +50,16 @@ let (|Char|_|) (str: string) =
         Some str[0]
     else
         None
+
+// Other:
+
+let memoize (fn: 'a -> 'b) : 'a -> 'b =
+    let cache = System.Collections.Generic.Dictionary<'a, 'b>()
+
+    fun x ->
+        match cache.TryGetValue(x) with
+        | (true, res) -> res
+        | _ ->
+            let res = fn x
+            cache.Add(x, res)
+            res
