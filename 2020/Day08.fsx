@@ -7,7 +7,7 @@ type Instruction =
     | Acc of int
     | Jmp of int
 
-    static member ofString(str: string) =
+    static member OfString(str: string) =
         match str.Split(' ') with
         | [| "nop"; arg |] -> Nop(int arg)
         | [| "acc"; arg |] -> Acc(int arg)
@@ -39,13 +39,12 @@ type Computer =
                 Acc = this.Acc + arg }
         | Jmp arg -> { this with Index = this.Index + arg }
 
-    /// jepa
     member this.Terminating: bool = this.Index = this.Instructions.Length - 1
 
 let instructions =
     "./input08.txt"
     |> System.IO.File.ReadAllLines
-    |> Array.map Instruction.ofString
+    |> Array.map Instruction.OfString
 
 // Step 1:
 
@@ -64,15 +63,6 @@ let step1 () =
     |> (fun cmp -> cmp.Acc)
 
 // Step 2:
-
-let tickUntilLoopOrTerminate (cmp: Computer) : Computer =
-    let rec loop (currCmp: Computer) (visitedIndexes: Set<int>) =
-        match currCmp.Tick with
-        | nextCmp when nextCmp.Terminating -> nextCmp
-        | nextCmp when visitedIndexes.Contains nextCmp.Index -> nextCmp
-        | nextCmp -> loop nextCmp (visitedIndexes.Add nextCmp.Index)
-
-    loop cmp Set.empty
 
 let tickUntilTerminating (cmp: Computer) : option<Computer> =
     let rec loop (currCmp: Computer) (visitedIndexes: Set<int>) =
