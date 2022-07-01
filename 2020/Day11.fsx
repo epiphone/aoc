@@ -4,65 +4,77 @@ open Utils
 
 // Parse input:
 
-type Grid = char [] []
+type Grid<'a> =
+    { Tiles: 'a []
+      W: int
+      H: int }
 
-let parseInput () : Grid =
+    static member Default(rows: 'a [] []) : Grid<'a> =
+        { Tiles = rows |> Array.collect id
+          W = rows[0].Length
+          H = rows.Length }
+
+    member this.Get(x, y) : 'a = this.Tiles[y * this.W + x]
+
+    member this.Set (x, y) (c: 'a) : unit = this.Tiles[ y * this.W + x ] <- c
+
+    member this.Clone() : Grid<'a> =
+        { this with Tiles = [| for t in this.Tiles -> t |] }
+
+    member this.isInBounds(x, y) : bool =
+        x >= 0 && x < this.W && y >= 0 && y < this.H
+
+    member inline this.Iteri(action: 'a -> (int * int) -> unit) : unit =
+        for y = 0 to this.H - 1 do
+            for x = 0 to this.W - 1 do
+                action (this.Get(x, y)) (x, y)
+
+    member inline this.IterNeighbours (action: 'a -> unit) ((centerX, centerY): int * int) : unit =
+        let minY = max 0 (centerY - 1)
+        let maxY = min (this.H - 1) (centerY + 1)
+        let minX = max 0 (centerX - 1)
+        let maxX = min (this.W - 1) (centerX + 1)
+
+        for y = minY to maxY do
+            for x = minX to maxX do
+                if (x, y) <> (centerX, centerY) then
+                    action (this.Get(x, y))
+
+let parseInput () : Grid<char> =
     "./input11.txt"
     |> System.IO.File.ReadAllLines
     |> Array.map Seq.toArray
+    |> Grid.Default
 
 let step1Input = parseInput ()
 let step2Input = parseInput ()
 
 // Step 1:
 
-let simulate (grid: Grid) (gridClone: Grid) (getNewTile: Grid -> (int * int) -> char) : bool =
+let simulate (grid: Grid<char>) (gridClone: Grid<char>) (getNewTile: Grid<char> -> (int * int) -> char) : bool =
     let mutable changed = false
 
-    for y = 0 to (grid.Length - 1) do
-        for x = 0 to (grid[0].Length - 1) do
-            gridClone[y][x] <- grid[y][x]
+    grid.Tiles.CopyTo(gridClone.Tiles, 0)
 
-    for y = 0 to (grid.Length - 1) do
-        for x = 0 to (grid[0].Length - 1) do
-            let tile = getNewTile gridClone (x, y)
+    grid.Iteri (fun _ pos ->
+        let tile = getNewTile gridClone pos
 
-            if tile <> grid[y][x] then
-                changed <- true
+        if tile <> grid.Get pos then
+            changed <- true
 
-            grid[y][x] <- tile
+        grid.Set pos tile)
 
     changed
 
-let adjacentOccupiedSeatCount (grid: Grid) (xPos, yPos) =
+let adjacentOccupiedSeatCount (grid: Grid<char>) (xPos, yPos) =
     let mutable count = 0
-    let minY = max 0 (yPos - 1)
-    let maxY = min (grid.Length - 1) (yPos + 1)
-    let minX = max 0 (xPos - 1)
-    let maxX = min (grid[0].Length - 1) (xPos + 1)
 
-    for y = minY to maxY do
-        for x = minX to maxX do
-            if grid[y][x] = '#' && (x, y) <> (xPos, yPos) then
-                count <- count + 1
+    grid.IterNeighbours (fun c -> if c = '#' then count <- count + 1) (xPos, yPos)
 
     count
 
-// let rec loop acc (x, y) =
-//     let isOccupied = grid[y][x] = '#' && (x, y) <> (xPos, yPos)
-//     let newAcc = acc + if isOccupied then 1 else 0
-
-//     if (x, y) = (maxX, maxY) then
-//         newAcc
-//     else if x = maxX then
-//         loop newAcc (minX, y + 1)
-//     else
-//         loop newAcc (x + 1, y)
-
-// loop 0 (minX, minY)
-
-let simulateUntilEquilibrium getNewTile (grid: Grid) =
-    let gridClone = [| for row in grid -> [| for tile in row -> tile |] |]
+let simulateUntilEquilibrium getNewTile (grid: Grid<char>) =
+    let gridClone: Grid<char> = grid.Clone()
 
     let rec loop () =
         match simulate grid gridClone getNewTile with
@@ -71,14 +83,13 @@ let simulateUntilEquilibrium getNewTile (grid: Grid) =
 
     loop ()
 
-let occupiedSeatCount (grid: Grid) =
-    grid
-    |> Array.collect (fun row -> row |> Array.filter (fun tile -> tile = '#'))
-    |> Array.length
+let occupiedSeatCount (grid: Grid<char>) : int =
+    grid.Tiles
+    |> Array.sumBy (fun tile -> if tile = '#' then 1 else 0)
 
 let step1 () =
-    let getNewTile (grid: Grid) (x, y) : char =
-        let tile = grid[y][x]
+    let getNewTile (grid: Grid<char>) (x, y) : char =
+        let tile = grid.Get(x, y)
 
         if tile <> '.' then
             let adjacentCount = adjacentOccupiedSeatCount grid (x, y)
@@ -96,25 +107,19 @@ let step1 () =
 
 // Step 2:
 
-let isInBounds (grid: 'a [] []) (x, y) =
-    x >= 0
-    && x < grid[0].Length
-    && y >= 0
-    && y < grid.Length
-
-let canSeeOccupiedSeatInDirection (grid: Grid) (posX, posY) (dirX, dirY) : bool =
+let canSeeOccupiedSeatInDirection (grid: Grid<char>) (posX, posY) (dirX, dirY) : bool =
     let rec loop (x, y) =
-        if not (isInBounds grid (x, y)) then
+        if not (grid.isInBounds (x, y)) then
             false
         else
-            match grid[y][x] with
+            match grid.Get(x, y) with
             | 'L' -> false
             | '#' -> true
             | _ -> loop (x + dirX, y + dirY)
 
     loop (posX + dirX, posY + dirY)
 
-let visibleOccupiedSeatCount (grid: Grid) pos =
+let visibleOccupiedSeatCount (grid: Grid<char>) pos =
     let mutable count = 0
 
     for y in -1 .. 1 do
@@ -128,8 +133,8 @@ let visibleOccupiedSeatCount (grid: Grid) pos =
     count
 
 let step2 () =
-    let getNewTile (grid: Grid) (x, y) : char =
-        let tile = grid[y][x]
+    let getNewTile (grid: Grid<char>) (x, y) : char =
+        let tile = grid.Get(x, y)
 
         if tile <> '.' then
             let visibleCount = visibleOccupiedSeatCount grid (x, y)
