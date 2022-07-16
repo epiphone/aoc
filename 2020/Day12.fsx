@@ -61,7 +61,6 @@ let degreeToVector (degrees: float) : Vec2 =
     let radians = degreeToRadian degrees
     Vec2(cos radians, sin radians)
 
-
 let applyAction ship action =
     let { Pos = pos; Dir = dir } = ship
 
@@ -79,10 +78,44 @@ let step1 () =
     let ship = Array.fold applyAction Ship.Default actions
     ship.Pos.ManhattanDistance()
 
+// Step 1 with a mutable record:
+
+type MutableShip =
+    { mutable Pos: Vec2
+      mutable Waypoint: Vec2
+      mutable Dir: float }
+
+    static member Default =
+        { Pos = Vec2(0, 0)
+          Waypoint = Vec2(10, 1)
+          Dir = 0 }
+
+    override this.ToString() = $"{this.Pos}, waypoint={this.Waypoint}"
+
+let applyMutableAction ship action : unit =
+    let { MutableShip.Pos = pos
+          MutableShip.Dir = dir } =
+        ship
+
+    match action with
+    | ('N', arg) -> ship.Pos <- pos + Vec2(0, arg)
+    | ('S', arg) -> ship.Pos <- pos + Vec2(0, -arg)
+    | ('E', arg) -> ship.Pos <- pos + Vec2(arg, 0)
+    | ('W', arg) -> ship.Pos <- pos + Vec2(-arg, 0)
+    | ('L', arg) -> ship.Dir <- dir + arg
+    | ('R', arg) -> ship.Dir <- dir - arg
+    | ('F', arg) -> ship.Pos <- pos + arg * (degreeToVector dir)
+    | _ -> failwith $"invalid action {action}"
+
+let step1Mutable () =
+    let ship = MutableShip.Default
+    Array.iter (applyMutableAction ship) actions
+    ship.Pos.ManhattanDistance()
+
 // Step 2:
 
 let applyWaypointAction ship action =
-    let { Pos = pos; Waypoint = wp } = ship
+    let { Ship.Pos = pos; Ship.Waypoint = wp } = ship
 
     match action with
     | ('N', arg) -> { ship with Waypoint = wp + Vec2(0, arg) }
@@ -110,11 +143,13 @@ let step2 () =
     ship.Pos.ManhattanDistance()
 
 benchmark [| "step1", step1
+             "step1Mutable", step1Mutable
              "step2", step2 |]
 
 (*
 | name                 |               result |   ms |      ticks |
 |=================================================================|
-| step1                |                 1007 |    0 |     466592 |
-| step2                |                41212 |    0 |     704290 |
+| step1                |                 1007 |    0 |     482322 |
+| step1Mutable         |                 1007 |    0 |     369045 |
+| step2                |                41212 |    0 |     709709 |
 *)
