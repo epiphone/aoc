@@ -45,7 +45,7 @@ let earliestOffsettingTimestamp (busIds: array<int>) : int64 =
         |> Array.filter (fun n -> n <> 0)
         |> Array.length
 
-    let prevTimestamps = [| for i in 0..busCount -> 0L |]
+    let prevTimestamps = Array.create busCount 0L
 
     let rec loop timestamp step =
         match consecutiveMatchingBuses timestamp busIds with
@@ -53,12 +53,12 @@ let earliestOffsettingTimestamp (busIds: array<int>) : int64 =
         | 0 -> loop (timestamp + step) step
         | n ->
             let newStep =
-                if prevTimestamps[n] <> 0 then
-                    max step (timestamp - prevTimestamps[n])
+                if prevTimestamps[n - 1] <> 0 then
+                    max step (timestamp - prevTimestamps[n - 1])
                 else
                     step
 
-            prevTimestamps[n] <- timestamp
+            prevTimestamps[n - 1] <- timestamp
 
             loop (timestamp + newStep) newStep
 
